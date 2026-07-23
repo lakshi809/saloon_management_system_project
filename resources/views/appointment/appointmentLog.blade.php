@@ -101,7 +101,7 @@
                                                                         onclick="setPaymentAmount({{$apnt->idappointment}},{{$apnt->amount}},'{{$apnt->User->first_name ?? ''}} {{$apnt->User->last_name ?? ''}}')"
                                                                         data-toggle="modal"
                                                                         data-target="#paymentModal">
-                                                                    Payment
+                                                                    Payment Done
                                                                 </button>
                                                             </p>
                                                         @endif

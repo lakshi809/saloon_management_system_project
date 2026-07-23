@@ -87,7 +87,31 @@
                                         {{--<a class="dropdown-product" href="#"><span class="badge badge-success pull-right m-t-5">5</span><i class="dripicons-gear text-muted"></i> Settings</a>--}}
                                         {{--<a class="dropdown-product" href="#"><i class="dripicons-lock text-muted"></i> Lock screen</a>--}}
                                         {{--<div class="dropdown-divider"></div>--}}
-                                        <a class="dropdown-item" href="logout" style="background-color: #000000 !important; color: #ffffff !important;"><i class="dripicons-exit" style="color: #ffffff !important;"></i> Logout</a>
+                                      <a class="dropdown-item" href="javascript:void(0);" onclick="confirmLogout()" style="background-color: #000000 !important; color: #ffffff !important;"><i class="dripicons-exit" style="color: #ffffff !important;"></i> Logout</a>
+                                    <script type="text/javascript">
+    function confirmLogout() {
+        swal({
+            title: 'Are you sure?',
+            text: 'Do you want to logout?',
+            dangerMode: true,
+            buttons: true,
+            showCancelButton: true,
+            confirmButtonText: 'YES',
+            confirmButtonColor: '#CC0000',
+            cancelButtonColor: '#00695c',
+            cancelButtonText: 'NO',
+            confirmButtonClass: 'btn btn-md btn-danger waves-effect',
+            cancelButtonClass: 'btn btn-md btn-primary waves-effect',
+            buttonsStyling: true
+        }).then(function (confirmed) {
+            if (confirmed) {
+                window.location.href = "{{ route('logout') }}";
+            }
+        });
+    }
+</script>
+                                    
+                                    
                                     </div>
                                 </li>
                             </ul>

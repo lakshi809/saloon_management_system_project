@@ -104,6 +104,7 @@ Route::post('/toggleFeedbackPublish', 'FeedbackController@togglePublish')->name(
 // TEMP HASH GENERATOR (REMOVE AFTER TEST)
 // ===============================
 
-Route::get('/hash', function () {
-    return bcrypt('admin123');
+Route::get('/encrypt-test', function () {
+    $enc = new \App\MyResources\AdvanceEncryption('admin123', 'Nova6566', 256);
+    return $enc->encrypt();
 });

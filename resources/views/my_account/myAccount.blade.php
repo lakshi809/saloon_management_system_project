@@ -1,4 +1,3 @@
-
 @include('includes/header_start')
 
 <link href="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -93,14 +92,7 @@
                                 <input type="date" class="form-control" id="dob" autocomplete="off" name="dob" placeholder="Date of Birth" readonly value="{{$users->dob}}">
                                 <small class="text-danger" id="dobError"></small>
                             </div>
-                            <div class="form-group">
-                                <label for="pass">Gender</label>
-                                <select class="form-control" name="gender" id="my-input-id" required disabled>
-                                    <option value="Male" {{ $users->gender == 'Male' ? 'selected' : '' }}> Male </option>
-                                    <option value="Female" {{ $users->gender == 'Female' ? 'selected' : '' }}> Female </option>
-                                </select>
-                                <small class="text-danger" id="my-input-idError"></small>
-                            </div>
+                            
                         </div>
                         <div class="col-lg-4 text-right">
                             <img src="{{ URL::asset('assets/images/myaccountprofile.png')}}" height="150" class="img-fluid mb-3" />
@@ -249,11 +241,8 @@
 
 function enablefield() {
     $('input').attr('readonly',false);
-    document.getElementById('my-input-id').disabled=false;
-
 
     $("#saveBtn").show();
-
 
 
     var profile=$("#hiddenUserId").val();
@@ -268,7 +257,6 @@ function enablefield() {
         $("#lName").val(data.last_name);
         $("#dob").val(data.dob);
         $("#contactNo").val(data.contact_number);
-        $("#my-input-id").val(data.gender);
 
     })
 

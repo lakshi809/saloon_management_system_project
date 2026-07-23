@@ -86,7 +86,7 @@
                                ">
 
                         <small class="text-danger">
-                            {{ $errors->first('email') }}
+                            {{ $errors->first('username') }}
                         </small>
 
                     </div>
@@ -120,23 +120,7 @@
                            name="_token"
                            value="{{ Session::token() }}">
 
-                    <!-- Remember + Button -->
-                    <div class="form-group row m-t-20">
-
-                        <div class="col-sm-6">
-
-                            <div class="custom-control custom-checkbox">
-
-                                <input type="checkbox"
-                                       class="custom-control-input"
-                                       name="rememberme"
-                                       id="customControlInline">
-
-                                <label class="custom-control-label"
-                                       for="customControlInline"
-                                       style="color: #4a148c;">
-
-                                    Remember me
+                 
 
                                 </label>
 
