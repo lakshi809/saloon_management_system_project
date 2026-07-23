@@ -11,7 +11,7 @@
                 </footer>
 
             </div>
-            <!-- End Right content here -->
+            
 
         </div>
         <!-- END wrapper -->
