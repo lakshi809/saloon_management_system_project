@@ -1,13 +1,15 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-
-class ClientInterfaceController extends controller
+// Controller for Client Interface
+class ClientInterfaceController extends Controller
 {
 
-   public function index() {
-        return view('clientInterface',['title'=>'clientInterface']);
+    // Display Client Interface Page
+    public function index()
+    {
+        // Return client interface view with page title
+        return view('clientInterface', ['title' => 'clientInterface']);
     }
 }

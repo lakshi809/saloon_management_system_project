@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
-    public function index(){
-        $userClients = User::where('role', 2)->get();
-        return view('client_management.clientManagement',['title'=>'Client Management', 'userClients'=>$userClients]);
-    }
+    public function index()
+{
+    $userClients = User::where('role', 2)->get();
+
+    return view('client_management.clientManagement', [
+        'title' => 'Client Management',
+        'userClients' => $userClients
+    ]);
+}
+    
 
     //Save Client by Sign Up Start
     public function saveClient(Request $request){
@@ -85,6 +91,11 @@ class ClientController extends Controller
     //Save Client by Admin Start
     public function saveClientByAdmin(Request $request){
 
+        // Only admin can register clients from this panel
+        if (Auth::user()->role != 1) {
+            return response()->json(['error' => 'Unauthorized. Only admin can register clients.'], 403);
+        }
+
         $validator = \Validator::make($request->all(), [
             'fName' => 'required|max:115',
             'lName' => 'required|max:115',
@@ -148,6 +159,11 @@ class ClientController extends Controller
     //Update Client Start
     public function updateClient(Request $request){
 
+        // Only admin can update clients from this panel
+        if (Auth::user()->role != 1) {
+            return response()->json(['error' => 'Unauthorized. Only admin can update clients.'], 403);
+        }
+
         $hiddenUserId = $request['hiddenUserId'];
 
         $validator = \Validator::make($request->all(), [
@@ -189,6 +205,33 @@ class ClientController extends Controller
         return response()->json(['success' => 'Client Updated']);
     }
     //Update Client End
+
+    //Toggle Client Status (Admin Only) Start
+    public function toggleClientStatus(Request $request){
+
+        // Extra safety check - only admin (role 1) can toggle status
+        if (Auth::user()->role != 1) {
+            return response()->json(['error' => 'Unauthorized. Only admin can change client status.'], 403);
+        }
+
+        $userId = $request['id'];
+
+        $user = \DB::table('master_user')->where('idmaster_user', $userId)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Client not found.'], 404);
+        }
+
+        $newStatus = ($user->status == 1) ? 0 : 1;
+
+        \DB::table('master_user')->where('idmaster_user', $userId)->update([
+            'status'     => $newStatus,
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['success' => 'Status updated successfully.', 'newStatus' => $newStatus]);
+    }
+    //Toggle Client Status (Admin Only) End
 
     public function myAccount()
     {

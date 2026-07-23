@@ -44,14 +44,7 @@
                         <small class="text-danger" id="contactNoError"></small>
                     </div>
 
-                    <div class="form-group">
-                        <label style="color: #000;">Gender<span style="color: red">*</span></label>
-                        <select class="form-control" name="gender" id="gender" required>
-                            <option> Male </option>
-                            <option> Female </option>
-                        </select>
-                        <small class="text-danger" id="genderError"></small>
-                    </div>
+                    
 
                     <div class="form-group">
                         <label style="color: #000;">Date of Birth<span style="color: red">*</span></label>

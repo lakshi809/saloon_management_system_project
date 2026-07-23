@@ -1,38 +1,44 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Client;
 use Illuminate\Http\Request;
-class ClientReportController extends Controller
 
+// Controller for Client Report
+class ClientReportController extends Controller
 {
 
-    public function clientReportIndex(Request $request){
+    // Display Client Report
+    public function clientReportIndex(Request $request)
+    {
 
+        // Initialize client query
+        $clients = Client::query();
 
-        $clients=Client::query();
+        // Get selected start and end dates
+        $fromDate = $request['startDate'];
+        $endDate = $request['endDate'];
 
-        $fromDate=$request['startDate'];
-        $endDate=$request['endDate'];
+        // Filter clients from the selected start date
+        if ($fromDate) {
 
-        if($fromDate){
-
-            $clients=$clients->whereDate('created_at','>=',date('Y-m-d',strtotime($fromDate)));
+            $clients = $clients->whereDate('created_at', '>=', date('Y-m-d', strtotime($fromDate)));
         }
 
-
-        if($endDate){
-            $clients=$clients->whereDate('created_at','<=',date('Y-m-d',strtotime($endDate)));
+        // Filter clients up to the selected end date
+        if ($endDate) {
+            $clients = $clients->whereDate('created_at', '<=', date('Y-m-d', strtotime($endDate)));
         }
 
+        // Retrieve filtered client records
+        $clients = $clients->get();
 
-        $clients=$clients->get();
-
-        return view('reports.clientReport',['title'=>'Client Report - Saloon Sandaliya','clients'=>$clients]);
+        // Return client report view
+        return view('reports.clientReport', [
+            'title' => 'Client Report - Saloon Sandaliya',
+            'clients' => $clients
+        ]);
     }
-
 
 }

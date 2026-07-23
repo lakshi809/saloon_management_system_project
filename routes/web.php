@@ -58,13 +58,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/saveCategory', 'CategoryController@categorySave')->name('saveCategory');
     Route::post('/updateCategory', 'CategoryController@categoryUpdate')->name('updateCategory');
     Route::post('/deleteCategory', 'CategoryController@categoryDelete')->name('deleteCategory');
-    Route::post('/activateDeactivate', 'CategoryController@activateDeactivate')->name('activateDeactivate');
+
+    // Only Admin & Staff can toggle category status on/off
+    Route::group(['middleware' => 'adminStaff'], function () {
+        Route::post('/activateDeactivate', 'CategoryController@activateDeactivate')->name('activateDeactivate');
+    });
 
 
     //Client Management
     Route::get('/clientManagement', 'ClientController@index')->name('clientManagement');
     Route::post('/saveClientByAdmin', 'ClientController@saveClientByAdmin')->name('saveClientByAdmin');
     Route::post('/updateClient', 'ClientController@updateClient')->name('updateClient');
+    Route::post('/toggleClientStatus', 'ClientController@toggleClientStatus')->name('toggleClientStatus');
 
 
     //User Management

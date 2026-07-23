@@ -13,42 +13,43 @@ use Illuminate\Support\Facades\Auth;
 class AppointmentLogController extends Controller
 {
 
+    // Display Appointment Log
     public function appointmentLog()
     {
+        // Get currently logged-in user
         $loginUser = Auth::user();
 
+        // Redirect to login page if user is not authenticated
         if (!$loginUser) {
             return redirect('/signin');
         }
 
-
+        // Get only active categories
         $categories = Category::where('status', 1)->get();
 
-
+        // Initialize empty appointment collection
         $appointments = collect();
 
-
-        // Role mapping
+        // -------------------------------------
+        // Role Mapping
         // 1 = Admin
         // 2 = Client
         // 3 = Staff
+        // -------------------------------------
 
+        // Admin can view all appointments
         if ($loginUser->role == 1) {
 
-            // Admin can view all appointments
             $appointments = Appointment::get();
 
+        // Staff can also view all appointments
         } elseif ($loginUser->role == 3) {
 
-            // Staff view their appointments
-            $appointments = Appointment::where(
-                'stylist_id',
-                $loginUser->idmaster_user
-            )->get();
+            $appointments = Appointment::get();
 
+        // Client can only view their own appointments
         } elseif ($loginUser->role == 2) {
 
-            // Client view their appointments
             $appointments = Appointment::where(
                 'master_user_idmaster_user',
                 $loginUser->idmaster_user
@@ -56,14 +57,16 @@ class AppointmentLogController extends Controller
 
         }
 
-
+        // Get all users
         $users = User::get();
 
+        // Get only staff users (role = 3)
         $stylists = User::where('role', 3)->get();
 
+        // Get all available time slots
         $timeSlots = TimeSlot::get();
 
-
+        // Return appointment log view
         return view('appointment.appointmentLog', [
             'title'        => 'Appointment Log',
             'categories'   => $categories,
@@ -75,28 +78,27 @@ class AppointmentLogController extends Controller
     }
 
 
-
     // Save Payment
     public function savePayment(Request $request)
     {
-
+        // Validate request
         $request->validate([
             'amount' => 'required',
             'appointment_idappointment' => 'required'
         ]);
 
-
+        // Create new payment
         $payment = new Payment();
 
+        // Assign payment details
         $payment->amount = $request->amount;
-
         $payment->appointment_idappointment =
             $request->appointment_idappointment;
 
-
+        // Save payment
         $payment->save();
 
-        // FIX: Mark the related appointment as Completed (status = 1)
+        // Update appointment status to Completed (status = 1)
         $appointment = Appointment::find($request->appointment_idappointment);
 
         if ($appointment) {
@@ -104,7 +106,7 @@ class AppointmentLogController extends Controller
             $appointment->save();
         }
 
-
+        // Return success response
         return response()->json([
             'success' => 'Payment saved successfully'
         ]);
@@ -112,33 +114,33 @@ class AppointmentLogController extends Controller
     }
 
 
-    // FIX: This method did not exist before, causing the Cancel button
-    // in appointmentLog.blade.php to fail (route pointed to a
-    // non-existent controller method -> 500 error -> status never updated).
+    // Cancel Appointment
     public function cancelAppointment(Request $request)
     {
-
+        // Validate request
         $request->validate([
             'aptId' => 'required'
         ]);
 
+        // Find appointment
         $appointment = Appointment::find($request->aptId);
 
+        // Check whether appointment exists
         if (!$appointment) {
             return response()->json([
                 'errors' => ['aptId' => ['Appointment not found.']]
             ]);
         }
 
-        // Mark the appointment as Cancelled (status = 2)
+        // Update appointment status to Cancelled (status = 2)
         $appointment->status = 2;
         $appointment->save();
 
+        // Return success response
         return response()->json([
             'success' => 'Appointment cancelled successfully'
         ]);
 
     }
-
 
 }

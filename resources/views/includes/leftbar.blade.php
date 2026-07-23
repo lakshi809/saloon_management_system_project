@@ -136,26 +136,44 @@
 
                     @endif
 
-                    <!-- REPORTS -->
-                    @if(Auth::check() && in_array(Auth::user()->role, ['1','3']))
-                    
-                        <li class="menu-title">Reports</li>
+                   <!-- REPORTS -->
 
-                        <li>
-                            <a href="{{ url('revenueReport') }}">
-                                <i class="fa fa-file-text-o"></i>
-                                <span>Revenue Report</span>
-                            </a>
-                        </li>
+            <!-- REPORTS -->
 
-                        <li>
-                            <a href="{{ url('clientReport') }}">
-                                <i class="fa fa-file-text-o"></i>
-                                <span>Client Report</span>
-                            </a>
-                        </li>
+ @if(Auth::check() && in_array(Auth::user()->role, ['1','3']))
 
-                    @endif
+
+    <li class="menu-title">Reports</li>
+    @if(Auth::user()->role == '1')
+
+    <!-- Revenue Report - Admin Only -->
+    
+
+        <li>
+            <a href="{{ url('revenueReport') }}">
+                <i class="fa fa-file-text-o"></i>
+                <span>Revenue Report</span>
+            </a>
+        </li>
+
+    @endif
+
+
+    <!-- Client Report - Admin and Staff -->
+    @if(in_array(Auth::user()->role, ['1','3']))
+
+        <li>
+            <a href="{{ url('clientReport') }}">
+                <i class="fa fa-file-text-o"></i>
+                <span>Client Report</span>
+            </a>
+        </li>
+
+    @endif
+
+@endif
+
+
 
                  <!-- OTHERS -->
                     <li class="menu-title">Others</li>

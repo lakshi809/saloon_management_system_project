@@ -20,7 +20,9 @@
         <!-- jQuery  -->
 
                 <script src="{{ URL::asset('assets/js/jquery.min.js')}}"></script>
-                <script src="{{ URL::asset('assets/js/popper.min.js')}}"></script>
+                <link href="{{ URL::asset('assets/plugins/sweet-alert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css">
+                 <script src="{{ URL::asset('assets/js/popper.min.js')}}"></script>
+
                 <script src="{{ URL::asset('assets/js/bootstrap.min.js')}}"></script>
                 <script src="{{ URL::asset('assets/js/modernizr.min.js')}}"></script>
                 <script src="{{ URL::asset('assets/js/jquery.slimscroll.js')}}"></script>

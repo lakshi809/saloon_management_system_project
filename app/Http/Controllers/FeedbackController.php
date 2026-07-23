@@ -9,78 +9,213 @@ use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
-    // Admin - view all feedback
+
+    // Display feedback list based on the logged-in user's role
     public function index()
     {
-        $feedbacks = Feedback::with(['appointment', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Get the currently authenticated user
+        $loginUser = Auth::user();
 
+        // Admin (Role 1) and Staff (Role 3) can view all feedback
+        if ($loginUser->role == 1 || $loginUser->role == 3)
+        {
+            $feedbacks = Feedback::leftJoin(
+                    'master_user',
+                    'feedback.master_user_idmaster_user',
+                    '=',
+                    'master_user.idmaster_user'
+                )
+                ->select(
+                    'feedback.*',
+                    'master_user.first_name',
+                    'master_user.last_name'
+                )
+                ->orderBy('feedback.created_at', 'desc')
+                ->get();
+
+        }
+        // Client (Role 2) can only view their own feedback
+        elseif ($loginUser->role == 2)
+        {
+            $feedbacks = Feedback::leftJoin(
+                    'master_user',
+                    'feedback.master_user_idmaster_user',
+                    '=',
+                    'master_user.idmaster_user'
+                )
+                ->where(
+                    'feedback.master_user_idmaster_user',
+                    $loginUser->idmaster_user
+                )
+                ->select(
+                    'feedback.*',
+                    'master_user.first_name',
+                    'master_user.last_name'
+                )
+                ->orderBy('feedback.created_at', 'desc')
+                ->get();
+
+        }
+        // Other users cannot view feedback
+        else
+        {
+            $feedbacks = collect();
+        }
+
+        // Return feedback log view
         return view('feedback.feedbackLog', [
             'title' => 'Feedback',
             'feedbacks' => $feedbacks
         ]);
     }
 
-    // Client - submit feedback for a completed appointment
+    // Save client feedback
     public function saveFeedback(Request $request)
     {
+        // Validate request data
         $request->validate([
             'appointment_idappointment' => 'required|integer',
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string'
         ]);
 
+        // Get logged-in user
         $loginUser = Auth::user();
 
-        $appointment = Appointment::find($request->appointment_idappointment);
+        // Find the selected appointment
+        $appointment = Appointment::find(
+            $request->appointment_idappointment
+        );
 
+        // Check whether appointment exists
         if (!$appointment) {
-            return response()->json(['errors' => ['appointment' => ['Appointment not found.']]]);
+
+            return response()->json([
+                'errors' => [
+                    'appointment' => [
+                        'Appointment not found.'
+                    ]
+                ]
+            ]);
+
         }
 
-        // Only the client who owns the appointment can review it
-        if ($appointment->master_user_idmaster_user != $loginUser->idmaster_user) {
-            return response()->json(['errors' => ['appointment' => ['Not authorized.']]]);
+        // Verify that the appointment belongs to the logged-in client
+        if ($appointment->master_user_idmaster_user
+            != $loginUser->idmaster_user)
+        {
+
+            return response()->json([
+                'errors' => [
+                    'appointment' => [
+                        'Not authorized.'
+                    ]
+                ]
+            ]);
+
         }
 
-        // Only completed appointments can be reviewed
-        if ($appointment->status != 1) {
-            return response()->json(['errors' => ['appointment' => ['Only completed appointments can be reviewed.']]]);
+        // Allow feedback only for completed appointments
+        if ($appointment->status != 1)
+        {
+
+            return response()->json([
+                'errors' => [
+                    'appointment' => [
+                        'Only completed appointments can be reviewed.'
+                    ]
+                ]
+            ]);
+
         }
 
-        // Prevent duplicate feedback
-        $existing = Feedback::where('appointment_idappointment', $request->appointment_idappointment)->first();
+        // Prevent duplicate feedback for the same appointment
+        $existing = Feedback::where(
+            'appointment_idappointment',
+            $request->appointment_idappointment
+        )->first();
 
-        if ($existing) {
-            return response()->json(['errors' => ['appointment' => ['Feedback already submitted for this appointment.']]]);
+        if ($existing)
+        {
+
+            return response()->json([
+                'errors' => [
+                    'appointment' => [
+                        'Feedback already submitted.'
+                    ]
+                ]
+            ]);
+
         }
 
+        // Save feedback into the database
         Feedback::create([
-            'appointment_idappointment' => $request->appointment_idappointment,
-            'master_user_idmaster_user' => $loginUser->idmaster_user,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
+
+            'appointment_idappointment'
+                => $request->appointment_idappointment,
+
+            'master_user_idmaster_user'
+                => $loginUser->idmaster_user,
+
+            'rating'
+                => $request->rating,
+
+            'comment'
+                => $request->comment,
+
+            // Publish feedback by default
             'is_published' => 1
+
         ]);
 
-        return response()->json(['success' => 'Thank you for your feedback!']);
+        // Return success response
+        return response()->json([
+            'success' => 'Thank you for your feedback!'
+        ]);
+
     }
 
-    // Admin - publish/hide toggle
+    // Toggle feedback publish/unpublish status
     public function togglePublish(Request $request)
     {
-        $request->validate(['id' => 'required|integer']);
 
-        $feedback = Feedback::find($request->id);
+        // Allow only admin users
+        if (Auth::user()->role != 1)
+        {
 
-        if (!$feedback) {
-            return response()->json(['errors' => ['id' => ['Feedback not found.']]]);
+            return response()->json([
+                'error' => 'Access denied'
+            ], 403);
+
         }
 
-        $feedback->is_published = $feedback->is_published ? 0 : 1;
+        // Find feedback by ID
+        $feedback = Feedback::find(
+            $request->id
+        );
+
+        // Check whether feedback exists
+        if (!$feedback)
+        {
+
+            return response()->json([
+                'error' => 'Feedback not found'
+            ], 404);
+
+        }
+
+        // Toggle publish status
+        $feedback->is_published =
+            $feedback->is_published == 1 ? 0 : 1;
+
+        // Save updated status
         $feedback->save();
 
-        return response()->json(['success' => 'Status updated']);
+        // Return success response
+        return response()->json([
+            'success' => 'Feedback status updated'
+        ]);
+
     }
+
 }

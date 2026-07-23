@@ -126,35 +126,45 @@
                 </div>
 
                 <div class="row">
-
                     <!-- Client -->
-                    <div class="col-md-4 sm-12">
-                        <div class="form-group">
-                            <label>Client</label>
+<div class="col-md-4 sm-12">
+    <div class="form-group">
+        <label>Client</label>
 
-                            @if(Auth::check() && Auth::user()->role == 4)
-                                <select class="form-control" name="client_display" id="client_display" disabled>
-                                    <option value="{{ $userLogged->id}}" selected>
-                                        {{ $userLogged->user_name }}
-                                    </option>
-                                </select>
-                                <input type="hidden" id="client" value="{{ $userLogged->id }}">
-                            @else
-                                <select class="form-control" name="client" id="client" required>
-                                    <option value="">Select client</option>
-                                    @if(isset($clients))
-                                        @foreach($clients as $client)
-                                            <option value="{{ $client->id}}">
-                                                {{ $client->name }}
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            @endif
+        @if($userRole == 2)
 
-                            <small class="text-danger" id="clientError"></small>
-                        </div>
-                    </div>
+            <input type="text"
+                   class="form-control"
+                   value="{{ $userLogged->first_name }} {{ $userLogged->last_name }}"
+                   readonly>
+
+            <input type="hidden"
+                   name="client"
+                   id="client"
+                   value="{{ $userLogged->idmaster_user }}">
+
+        @else
+
+            <select name="client" id="client" class="form-control">
+                <option value="">Select Client</option>
+
+                @foreach($clients as $client)
+                    <option value="{{ $client->id }}">
+                        {{ $client->name }}
+                    </option>
+                @endforeach
+
+            </select>
+
+        @endif
+
+        <small class="text-danger" id="clientError"></small>
+    </div>
+</div>
+
+                 
+    
+   
 
                     <!-- Category -->
                     <div class="col-md-4 sm-12">
@@ -271,12 +281,19 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
-    // Initialize Select2 for Client Selection with search functionality
+// Initialize Select2 for Client Selection only if it's a real <select> (admin/staff view)
+if ($('#client').is('select')) {
     $('#client').select2({
         dropdownParent: $('#addAppointmentModal'),
         width: '100%'
     });
+}
+
+// Initialize Select2 for Stylist Selection
+$('#stylist').select2({
+    dropdownParent: $('#addAppointmentModal'),
+    width: '100%'
+});
 
     // Initialize Select2 for Stylist Selection
     $('#stylist').select2({
@@ -302,7 +319,7 @@ $(document).ready(function () {
 
 });
     function saveAppointment() {
-        var client   = $('#client').val();
+        var client = $('#client').length ? $('#client').val() : '';
         var category = $('#category').val();
         var date     = $('#date').val();
         var timeSlot = $('#timeSlot').val();

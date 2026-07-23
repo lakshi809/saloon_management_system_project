@@ -53,15 +53,22 @@
                         <div class="col-lg-8">
                         </div>
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-primary float-right"
-                                    data-toggle="modal"  data-target="#addClientModal" >
-                                Register Client</button>
+
+                            @if(Auth::user()->role == 1)
+
+                                <button type="button" class="btn btn-primary float-right"
+                                        data-toggle="modal" data-target="#addClientModal">
+                                    Register Client
+                                </button>
+
+                            @endif
+
                         </div>
                     </div>
 
 
 
-            <br/>
+                    <br/>
 
 
 
@@ -80,7 +87,6 @@
                                     <th>USER ID</th>
                                     <th>NAME</th>
                                     <th>CONTACT NUMBER</th>
-                                    <th>GENDER</th>
                                     <th>STATUS</th>
                                     <th>OPTIONS</th>
                                 </tr>
@@ -88,100 +94,146 @@
 
                                 <tbody>
 
-                                @if(isset($userClients))
-                                    @if(count($userClients)>0)
-                                        @foreach($userClients as $userClient)
+                           
 
-                                            <tr>
-                                                <td>REG-{{$userClient->idmaster_user}}</td>
+@foreach($userClients as $userClient)
 
-                                                <td>{{$userClient->first_name}} {{$userClient->last_name}}</td>
+<tr>
 
-                                                <td>{{$userClient->contact_number}}</td>
-
-                                                <td>{{$userClient->gender}}</td>
+<td>
+REG-{{$userClient->idmaster_user}}
+</td>
 
 
-                                                <!--Status Start-->
-                                                @if($userClient->status == 1)
-                                                    <td>
-                                                        <p>
-                                                            <input type="checkbox"
-                                                                   onchange="adMethod('{{ $userClient->idmaster_user}}','master_user')"
-                                                                   id="{{"c".$userClient->idmaster_user}}" checked
-                                                                   switch="none"/>
-                                                            <label for="{{"c".$userClient->idmaster_user}}"
-                                                                   data-on-label="On"
-                                                                   data-off-label="Off"></label>
-                                                        </p>
-                                                    </td>
+<td>
+{{$userClient->first_name}} {{$userClient->last_name}}
+</td>
 
 
-                                                @else
-                                                    <td>
-                                                        <p>
-                                                            <input type="checkbox"
-                                                                   onchange="adMethod('{{ $userClient->idmaster_user}}','master_user')"
-                                                                   id="{{"c".$userClient->idmaster_user}}"
-                                                                   switch="none"/>
-                                                            <label for="{{"c".$userClient->idmaster_user}}"
-                                                                   data-on-label="On"
-                                                                   data-off-label="Off"></label>
-                                                        </p>
-                                                    </td>
-
-                                            @endif
-                                            <!--Status End-->
+<td>
+{{$userClient->contact_number}}
+</td>
 
 
-                                                <!--Options Start-->
-                                                <td>
+<td>
 
-                                                    <p>
-                                                        <button type="button" title="View"
-                                                                class="btn btn-sm btn-default  waves-effect waves-light"
-                                                                data-toggle="modal"
+@if(Auth::user()->role == 1)
 
-                                                                data-fname="{{ $userClient->first_name }}"
-                                                                data-lname="{{ $userClient->last_name }}"
-                                                                data-contactno="{{ $userClient->contact_number }}"
-                                                                data-gender="{{ $userClient->gender }}"
-                                                                data-dob="{{ $userClient->dob }}"
+<p>
+<input type="checkbox"
+onclick="adMethod('{{$userClient->idmaster_user}}')"
+id="c{{$userClient->idmaster_user}}"
+switch="none"
+{{$userClient->status == 1 ? 'checked' : ''}}
+/>
 
-                                                                id="viewClientID"
-                                                                data-target="#viewClientModal">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
+<label for="c{{$userClient->idmaster_user}}"
+data-on-label="On"
+data-off-label="Off">
+</label>
 
-                                                        <button type="button"
-                                                                class="btn btn-sm btn-warning  waves-effect waves-light"
-                                                                data-toggle="modal"
+</p>
 
-                                                                data-id="{{ $userClient->idmaster_user }}"
-                                                                data-fname="{{ $userClient->first_name }}"
-                                                                data-lname="{{ $userClient->last_name }}"
-                                                                data-contactno="{{ $userClient->contact_number }}"
-                                                                data-dob="{{ $userClient->dob }}"
+@else
 
-                                                                id="updateClientID"
-                                                                data-target="#updateClientModal"><i
-                                                                    class="fa fa-edit"></i>
-                                                        </button>
+{{$userClient->status == 1 ? 'Active':'Inactive'}}
 
-                                                    </p>
+@endif
 
-                                                </td>
-                                                <!--Options End-->
+</td>
 
 
-                                            </tr>
+<td>
+
+<!-- VIEW BUTTON (class instead of duplicate id, so every row's button works) -->
+
+<button type="button"
+class="btn btn-sm btn-default viewClientBtn"
+data-toggle="modal"
+data-target="#viewClientModal"
+
+data-fname="{{$userClient->first_name}}"
+data-lname="{{$userClient->last_name}}"
+data-contactno="{{$userClient->contact_number}}"
+data-dob="{{$userClient->dob}}">
+
+<i class="fa fa-eye"></i>
+
+</button>
 
 
-                                        @endforeach
-                                    @endif
-                                @endif
 
-                                </tbody>
+@if(Auth::user()->role == 1)
+
+
+<!-- UPDATE BUTTON (class instead of duplicate id) -->
+
+<button type="button"
+class="btn btn-sm btn-warning updateClientBtn"
+data-toggle="modal"
+data-target="#updateClientModal"
+
+data-id="{{$userClient->idmaster_user}}"
+data-fname="{{$userClient->first_name}}"
+data-lname="{{$userClient->last_name}}"
+data-contactno="{{$userClient->contact_number}}"
+data-dob="{{$userClient->dob}}">
+
+<i class="fa fa-edit"></i>
+
+</button>
+
+
+
+<!-- DELETE BUTTON -->
+
+<button type="button"
+class="btn btn-sm btn-danger deleteClientBtn"
+data-id="{{$userClient->idmaster_user}}">
+
+<i class="fa fa-trash"></i>
+
+</button>
+
+
+@endif
+
+
+</td>
+
+
+</tr>
+
+@endforeach
+
+
+</tbody>   
+
+
+
+              
+
+
+             
+
+                    
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+                                               
 
                             </table>
 
@@ -246,14 +298,7 @@
                     <small class="text-danger" id="contactNoError"></small>
                 </div>
 
-                <div class="form-group">
-                    <label>Gender<span style="color: red">*</span></label>
-                    <select class="form-control" name="gender" id="gender" required>
-                        <option> Male </option>
-                        <option> Female </option>
-                    </select>
-                    <small class="text-danger" id="genderError"></small>
-                </div>
+
 
                 <div class="form-group">
                     <label>Date of Birth <span style="color: red">*</span></label>
@@ -337,12 +382,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Gender</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="viewGender" readonly>
-                        </div>
-                    </div>
 
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">DOB</label>
@@ -506,15 +545,63 @@
     $(document).on("wheel", "input[type=number]", function (e) {
         $(this).blur();
     });
-    function adMethod(dataID, tableName) {
+   
+function adMethod(id)
+{
 
-        $.post('activateDeactivate', {id: dataID, table: tableName}, function (data) {
+    $.post('toggleClientStatus',
+    {
+        id:id,
+        _token:$('meta[name="csrf-token"]').attr('content')
 
+    },
+
+    function(data){
+
+
+        if(data.success){
+
+            notify({
+
+                type:"success",
+                title:"STATUS UPDATED",
+                autoHide:true,
+                delay:2000,
+                position:{
+                    x:"right",
+                    y:"top"
+                },
+                message:data.success
+
+            });
+
+
+        }
+
+
+    }).fail(function(){
+
+        notify({
+
+            type:"danger",
+            title:"ERROR",
+            message:"Status update failed"
 
         });
-    }
+
+    });
 
 
+}
+
+    
+
+      
+
+
+
+
+        
 
 
 
@@ -524,7 +611,7 @@
         $("#fNameError").html('');
         $("#lNameError").html('');
         $("#contactNoError").html('');
-        $("#genderError").html('');
+
         $("#dobError").html('');
         $("#usernameError").html('');
         $("#passwordError").html('');
@@ -631,13 +718,14 @@
 
 
     //View Client Details Start
+    // FIX: use class selector (.viewClientBtn) instead of duplicate id (#viewClientID)
+    // so every row's View button works, not just the first row in the table.
 
-    $(document).on('click', '#viewClientID', function () {
+    $(document).on('click', '.viewClientBtn', function () {
 
         var firstName = $(this).data("fname");
         var lastName = $(this).data("lname");
         var contactNo = $(this).data("contactno");
-        var gender = $(this).data("gender");
         var dob = $(this).data("dob");
 
 
@@ -645,7 +733,6 @@
         $("#viewFname").val(firstName);
         $("#viewLname").val(lastName);
         $("#viewContactNo").val(contactNo);
-        $("#viewGender").val(gender);
         $("#viewDob").val(dob);
 
 
@@ -660,7 +747,10 @@
 
 
     //Update Client Start
-    $(document).on('click', '#updateClientID', function () {
+    // FIX: use class selector (.updateClientBtn) instead of duplicate id (#updateClientID)
+    // so every row's Update button works, not just the first row in the table.
+
+    $(document).on('click', '.updateClientBtn', function () {
 
         var userId = $(this).data("id");
 
@@ -768,6 +858,51 @@
         })
     }
     //Update Client End
+
+
+
+
+
+
+    //Toggle Client Status Start
+    $(document).on('click', '.toggleStatusBtn', function () {
+
+        var clientId = $(this).data('id');
+
+        $.post('toggleClientStatus', { id: clientId }, function (data) {
+
+            if (data.success != null) {
+                notify({
+                    type: "success",
+                    title: 'STATUS UPDATED',
+                    autoHide: true,
+                    delay: 2000,
+                    position: {
+                        x: "right",
+                        y: "top"
+                    },
+                    icon: '<img src="{{ URL::asset('assets/images/correct.png')}}" />',
+                    message: data.success,
+                });
+                setTimeout(function () {
+                    location.reload();
+                }, 800);
+            }
+
+        }).fail(function (xhr) {
+            var msg = 'Something went wrong.';
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+                msg = xhr.responseJSON.error;
+            }
+            notify({
+                type: "danger",
+                title: 'ERROR',
+                message: msg,
+            });
+        });
+
+    });
+    //Toggle Client Status End
 
 
 

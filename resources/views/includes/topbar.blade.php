@@ -78,7 +78,8 @@
                                 <li class="list-inline-item dropdown notification-list">
                                     <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button"
                                        aria-haspopup="false" aria-expanded="false">
-                                       <img src="{{ URL::asset('assets/images/users/avatar-1.png')}}" height="20" alt="user" class="rounded-circle">
+                            <img src="{{ URL::asset('assets/images/myaccountprofile.png')}}" height="60" width="40" class="img-fluid mb-6" />
+                                    
 
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -88,28 +89,14 @@
                                         {{--<a class="dropdown-product" href="#"><i class="dripicons-lock text-muted"></i> Lock screen</a>--}}
                                         {{--<div class="dropdown-divider"></div>--}}
                                       <a class="dropdown-item" href="javascript:void(0);" onclick="confirmLogout()" style="background-color: #000000 !important; color: #ffffff !important;"><i class="dripicons-exit" style="color: #ffffff !important;"></i> Logout</a>
-                                    <script type="text/javascript">
+ <script type="text/javascript">
     function confirmLogout() {
-        swal({
-            title: 'Are you sure?',
-            text: 'Do you want to logout?',
-            dangerMode: true,
-            buttons: true,
-            showCancelButton: true,
-            confirmButtonText: 'YES',
-            confirmButtonColor: '#CC0000',
-            cancelButtonColor: '#00695c',
-            cancelButtonText: 'NO',
-            confirmButtonClass: 'btn btn-md btn-danger waves-effect',
-            cancelButtonClass: 'btn btn-md btn-primary waves-effect',
-            buttonsStyling: true
-        }).then(function (confirmed) {
-            if (confirmed) {
-                window.location.href = "{{ route('logout') }}";
-            }
-        });
+        if (confirm('Do you want to logout?')) {
+            window.location.href = "{{ route('logout') }}";
+        }
     }
 </script>
+
                                     
                                     
                                     </div>

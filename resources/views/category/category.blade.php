@@ -81,12 +81,18 @@
 
                                 <thead>
                                     <tr>
-                                        <th>CATEGORY NAME</th>
-                                        <th>AMOUNT</th>
-                                        <th>STATUS</th>
-                                        <th>OPTIONS</th>
-                                    </tr>
-                                </thead>
+    <th>CATEGORY NAME</th>
+    <th>AMOUNT</th>
+
+    @if(Auth::user()->role == 1)
+        <th>STATUS</th>
+    @endif
+
+    <th>OPTIONS</th>
+</tr>
+                                  
+
+
 
                                 <tbody>
 
@@ -100,20 +106,24 @@
                                                 <td>{{$category->amount}}</td>
 
 
-                                         <!--Status Start-->
-                                                <td>
-                                                    <p>
-                                                        <input type="checkbox"
-                                                               onchange="adMethod('{{ $category->idcategory }}', 'category')"
-                                                               id="{{ 'c' . $category->idcategory }}"
-                                                               switch="none" {{ $category->status == 1 ? 'checked' : '' }} />
-                                                        <label for="{{ 'c' . $category->idcategory}}"
-                                                               data-on-label="On"
-                                                               data-off-label="Off"></label>
-                                                    </p>
-                                                </td>
+                                     <!-- Status Start -->
+@if(Auth::check() && in_array(Auth::user()->role, ['1']))
+<td>
+    <p>
+       <input type="checkbox"
+       onchange="adMethod('{{ $category->idcategory }}', 'category')"
+       id="{{ 'cl' . $category->idcategory }}"
+       switch="none"
+       {{ $category->status == 1 ? 'checked' : '' }} />
 
-                                         <!--Status End-->
+        <label for="{{ 'cl' . $category->idcategory }}"
+               data-on-label="On"
+               data-off-label="Off">
+        </label>
+    </p>
+</td>
+@endif
+<!-- Status End -->   
 
 
 
@@ -197,6 +207,7 @@
 
 
 <!-- Add Category Modal Start-->
+  @if(Auth::check() && in_array(Auth::user()->role, ['1']))
 <div class="modal fade" id="addCategoryModal" tabindex="-1"
      role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -231,6 +242,7 @@
                         <button type="button"  class="btn btn-primary float-right"
                                 onclick="saveCategory()" >
                           Save Category
+                          @endif
                         </button>
                     </div>
 
@@ -305,6 +317,7 @@
 
 
 <!-- Update Category Modal Start-->
+ @if(Auth::check() && in_array(Auth::user()->role, ['1']))
 <div class="modal fade" id="updateCategoryModal" tabindex="-1"
      role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -348,6 +361,7 @@
                     <button type="button"  class="btn btn-primary float-right"
                             onclick="updateCategory()" >
                         Update Category</button>
+                 @endif       
                 </div>
 
             </div>
