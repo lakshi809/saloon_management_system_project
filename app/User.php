@@ -33,7 +33,7 @@ class User extends Authenticatable
         'last_name',
         'dob',
         'contact_number',
-        'gender'
+        
     ];
 
 

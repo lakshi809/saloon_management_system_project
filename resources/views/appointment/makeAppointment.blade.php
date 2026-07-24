@@ -295,11 +295,7 @@ $('#stylist').select2({
     width: '100%'
 });
 
-    // Initialize Select2 for Stylist Selection
-    $('#stylist').select2({
-        dropdownParent: $('#addAppointmentModal'),
-        width: '100%'
-    });
+   
 
     // Select2 fires its own event - bind both to be safe
     $('#stylist').on('change select2:select', function () {

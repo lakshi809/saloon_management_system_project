@@ -127,7 +127,7 @@
                                     <th>REGISTERED DATE</th>
                                     <th>NAME</th>
                                     <th>CONTACT NO</th>
-                                    <th>GENDER</th>
+                                    
                                 </tr>
                                 </thead>
 
@@ -156,9 +156,6 @@
 
                                                 {{-- Contact Number --}}
                                                 <td>{{$client->contact_number}}</td>
-
-                                                {{-- Gender --}}
-                                                <td>{{$client->gender}}</td>
 
                                             </tr>
 

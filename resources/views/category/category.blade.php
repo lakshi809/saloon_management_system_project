@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <button type="button" class="btn btn-primary float-right"
+                            <button type="button" class="btn btn-primary  float-right"
                                     data-toggle="modal"  data-target="#addCategoryModal" >
                                 Add Category
                             </button>
@@ -83,6 +83,7 @@
                                     <tr>
     <th>CATEGORY NAME</th>
     <th>AMOUNT</th>
+    
 
     @if(Auth::user()->role == 1)
         <th>STATUS</th>
@@ -153,7 +154,7 @@
                                                                 data-amount="{{ $category->amount }}"
 
                                                                 id="uCategoryID"
-                                                                data-target="#updateCategoryModal"><i
+                                                                data-target="#CategoryModal"><i
                                                                     class="fa fa-edit"></i>
                                                         </button>
 

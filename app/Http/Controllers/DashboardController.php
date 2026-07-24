@@ -22,8 +22,8 @@ class DashboardController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
 
-        // Check if the logged-in user is a client (Role = 4)
-        if ($user->role == 4) {
+        // Check if the logged-in user is a client (Role = 2)
+        if ($user->role == 2) {
 
             // Count canceled appointments of the logged-in client
             $canceledApp = Appointment::where('status', 2)

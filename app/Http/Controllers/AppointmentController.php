@@ -53,7 +53,7 @@ class AppointmentController extends Controller
             ->get();
 
         // Allow appointments up to 50 days from today
-        $maxDays = Carbon::now()->addDays(50);
+        $maxDays = Carbon::now()->addDays(30);
 
         // Return appointment view with required data
         return view('appointment.makeAppointment', [

@@ -210,7 +210,7 @@
         $("#fNameError").html('');
         $("#lNameError").html('');
         $("#contactNoError").html('');
-        $("#genderError").html('');
+        
         $("#dateError").html('');
         $("#usernameError").html('');
         $("#passwordError").html('');

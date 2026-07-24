@@ -153,7 +153,7 @@
 
     /* Feedback Card Style */
     .feedback-card {
-        border-left: 4px solid #f06292;
+        border-left: 2px solid #f06292;
     }
 
     /* Card Body Padding */

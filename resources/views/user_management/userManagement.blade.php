@@ -170,7 +170,7 @@
             data-fname="{{ $user->first_name }}"
             data-lname="{{ $user->last_name }}"
             data-contactno="{{ $user->contact_number }}"
-            data-gender="{{ $user->gender }}"
+            
             data-dob="{{ $user->dob }}"
 
             id="viewUserID"
@@ -263,8 +263,8 @@
                             <label>User Type<span style="color: red">*</span></label>
                             <select class="form-control" name="userType" id="userType" required>
                                 <option disabled value="" selected> Select User Role</option>
-                                <option value="3"> Employee </option>
-                                <option value="2"> Counsellor </option>
+                                <option value="3"> stylist </option>
+                                <option value="2"> client </option>
                             </select>
                             <small class="text-danger" id="userTypeError"></small>
                         </div>
@@ -304,14 +304,7 @@
 
 
 
-                        <div class="form-group">
-                            <label>Gender<span style="color: red">*</span></label>
-                            <select class="form-control" name="gender" id="gender" required>
-                                <option> Male </option>
-                                <option> Female </option>
-                            </select>
-                            <small class="text-danger" id="genderError"></small>
-                        </div>
+                        
 
                         <div class="form-group">
                             <label>Date of Birth <span style="color: red">*</span></label>
@@ -406,12 +399,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Gender</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="viewGender" readonly>
-                        </div>
-                    </div>
+                    
 
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">DOB</label>
@@ -614,7 +602,7 @@
             userType:userType,
             fName:fName,
             lName:lName,
-            gender:gender,
+            
             dob:dob,
             contactNo:contactNo,
             username:username,
@@ -651,10 +639,7 @@
                     p.innerHTML = data.errors.contactNo[0];
                 }
 
-                if(data.errors.gender) {
-                    var p = document.getElementById('genderError');
-                    p.innerHTML = data.errors.gender[0];
-                }
+               
 
                 if(data.errors.dob) {
                     var p = document.getElementById('dobError');
@@ -715,7 +700,7 @@
         var firstName = $(this).data("fname");
         var lastName = $(this).data("lname");
         var contactNo = $(this).data("contactno");
-        var gender = $(this).data("gender");
+        
         var dob = $(this).data("dob");
 
 
@@ -723,7 +708,7 @@
         $("#viewFname").val(firstName);
         $("#viewLname").val(lastName);
         $("#viewContactNo").val(contactNo);
-        $("#viewGender").val(gender);
+        
         $("#viewDob").val(dob);
 
 

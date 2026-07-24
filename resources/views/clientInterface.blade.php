@@ -245,14 +245,71 @@
 
                                 <div class="row mt-5">
 
-                                    <!-- Hair Cutting -->
                                     <!-- Service Card 01 -->
+                                    <div class="col-md-4 animate" data-animate="fadeInUp">
 
-                                    <!-- Dressing & Hair Coloring -->
+                                        <div class="card h-100 text-center p-3">
+
+                                            <div class="card-body">
+
+                                                <i class="fa fa-scissors fa-3x mb-3"></i>
+
+                                                <h5 class="fw-bold">Hair Cutting</h5>
+
+                                                <p>
+                                                    Precision haircuts tailored to your style, face shape and personality
+                                                    by our expert stylists.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                     <!-- Service Card 02 -->
+                                    <div class="col-md-4 animate" data-animate="fadeInUp">
 
-                                    <!-- Facial & Beauty Treatments -->
+                                        <div class="card h-100 text-center p-3">
+
+                                            <div class="card-body">
+
+                                                <i class="fa fa-paint-brush fa-3x mb-3"></i>
+
+                                                <h5 class="fw-bold">Dressing & Hair Coloring</h5>
+
+                                                <p>
+                                                    Trendy hair coloring and styling services to give you a fresh,
+                                                    vibrant new look.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                     <!-- Service Card 03 -->
+                                    <div class="col-md-4 animate" data-animate="fadeInUp">
+
+                                        <div class="card h-100 text-center p-3">
+
+                                            <div class="card-body">
+
+                                                <i class="fa fa-heart fa-3x mb-3"></i>
+
+                                                <h5 class="fw-bold">Facial & Beauty Treatments</h5>
+
+                                                <p>
+                                                    Rejuvenating facial and beauty treatments to help you glow and
+                                                    feel refreshed.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
