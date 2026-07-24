@@ -112,7 +112,7 @@
 <td>
     <p>
        <input type="checkbox"
-       onchange="adMethod('{{ $category->idcategory }}', 'category')"
+       onchange="adMethod('{{ $category->idcategory }}', 'category', 'cl{{ $category->idcategory }}')"
        id="{{ 'cl' . $category->idcategory }}"
        switch="none"
        {{ $category->status == 1 ? 'checked' : '' }} />
@@ -444,13 +444,59 @@
 
 
 
-    //Change Status
-    function adMethod(dataID, tableName) {
+    //Change Status Start
+    // FIX: previously this callback did nothing with the response, so if the
+    // server failed to update (validation error, wrong table name, exception,
+    // etc.) the checkbox still looked "changed" until you refreshed and saw
+    // the real DB value. Now we check data.success / data.error and revert
+    // the checkbox visually if the update did not actually happen.
+    function adMethod(dataID, tableName, checkboxId) {
 
-        $.post('activateDeactivate', {id: dataID, table: tableName}, function (data) {
+        var $checkbox = $('#' + checkboxId);
 
-        });
+        $.post('activateDeactivate', {id: dataID, table: tableName})
+            .done(function (data) {
+
+                console.log('activateDeactivate response:', data);
+
+                if (data && data.success) {
+                    notify({
+                        type: "success",
+                        title: 'STATUS UPDATED',
+                        autoHide: true,
+                        delay: 1200,
+                        position: { x: "right", y: "top" },
+                        icon: '<img src="{{ URL::asset('assets/images/correct.png')}}" />',
+                        message: data.success,
+                    });
+                } else {
+                    // Server responded but did not confirm success -> revert checkbox
+                    $checkbox.prop('checked', !$checkbox.prop('checked'));
+                    notify({
+                        type: "error",
+                        title: 'UPDATE FAILED',
+                        autoHide: true,
+                        delay: 2000,
+                        position: { x: "right", y: "top" },
+                        message: (data && data.error) ? data.error : 'Status could not be updated.',
+                    });
+                }
+            })
+            .fail(function (xhr) {
+                console.log('activateDeactivate error:', xhr.responseText);
+                // Request itself failed (500, CSRF mismatch, network, etc.) -> revert checkbox
+                $checkbox.prop('checked', !$checkbox.prop('checked'));
+                notify({
+                    type: "error",
+                    title: 'UPDATE FAILED',
+                    autoHide: true,
+                    delay: 2000,
+                    position: { x: "right", y: "top" },
+                    message: 'Something went wrong while updating status.',
+                });
+            });
     }
+    //Change Status End
 
 
 
