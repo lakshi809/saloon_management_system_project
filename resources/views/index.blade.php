@@ -42,7 +42,7 @@
             <div class="col-md-6">
                 <div class="card mb-3" style="background-color: #fce4ec; color: #ad1457;">
                     <div class="card-header">
-                        <h4>Pending</h4>
+                        <h4>Pending Appointments</h4>
                     </div>
 
                     <div class="card-body">
@@ -56,7 +56,7 @@
             <div class="col-md-6">
                 <div class="card mb-3" style="background-color: #fce4ec; color: #ad1457;">
                     <div class="card-header">
-                        <h4>Canceled</h4>
+                        <h4>Canceled Appointments</h4>
                     </div>
 
                     <div class="card-body">
@@ -70,7 +70,7 @@
             <div class="col-md-6">
                 <div class="card mb-3" style="background-color: #fce4ec; color: #ad1457;">
                     <div class="card-header">
-                        <h4>Completed</h4>
+                        <h4>Completed Appointments</h4>
                     </div>
 
                     <div class="card-body">
