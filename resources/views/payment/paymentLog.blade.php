@@ -1,154 +1,148 @@
+{{-- Include common header section --}}
 @include('includes/header_start')
 
+{{-- ================= CSS Files ================= --}}
+
+{{-- DataTables CSS --}}
 <link href="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{ URL::asset('assets/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
-<!-- Responsive datatable examples -->
-<link href="{{ URL::asset('assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
-<link href="{{ URL::asset('assets/plugins/sweet-alert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css">
 
-<!-- Plugins css -->
+{{-- Responsive DataTables CSS --}}
+<link href="{{ URL::asset('assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+
+{{-- SweetAlert CSS --}}
+<link href="{{ URL::asset('assets/plugins/sweet-alert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css"/>
+
+{{-- Form Plugin CSS --}}
 <link href="{{ URL::asset('assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
 <link href="{{ URL::asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{ URL::asset('assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css')}}" rel="stylesheet"/>
-<link href="{{ URL::asset('assets/css/custom_checkbox.css')}}" rel="stylesheet" type="text/css"/>
-<link href="{{ URL::asset('assets/css/jquery.notify.css')}}" rel="stylesheet" type="text/css">
-<link href="{{ URL::asset('assets/css/mdb.css')}}" rel="stylesheet" type="text/css">
 
+{{-- Custom CSS --}}
+<link href="{{ URL::asset('assets/css/custom_checkbox.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{ URL::asset('assets/css/jquery.notify.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{ URL::asset('assets/css/mdb.css')}}" rel="stylesheet" type="text/css"/>
+
+{{-- CSRF Token for AJAX requests --}}
 <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
-
+{{-- Include header end --}}
 @include('includes/header_end')
 
-<!-- Page title -->
+{{-- ================= Page Header ================= --}}
 <ul class="list-inline menu-left mb-0">
+
+    {{-- Mobile menu button --}}
     <li class="list-inline-item">
         <button type="button" class="button-menu-mobile open-left waves-effect">
             <i class="ion-navicon"></i>
         </button>
     </li>
+
+    {{-- Page title --}}
     <li class="hide-phone list-inline-item app-search">
         <h3 class="page-title">{{ $title }}</h3>
     </li>
+
 </ul>
 
 <div class="clearfix"></div>
 </nav>
 
 </div>
-<!-- Top Bar End -->
 
-<!-- ==================
-     PAGE CONTENT START
-     ================== -->
-
+{{-- ================= Main Content ================= --}}
 <div class="page-content-wrapper">
     <div class="container-fluid">
+
         <div class="col-lg-12">
             <div class="card m-b-20">
+
                 <div class="card-body">
 
-
-
-
-
-
-
-
-                    <!--Data Table Start-->
-
+                    {{-- ================= Payment Log Table ================= --}}
                     <div class="table-rep-plugin">
+
                         <div class="table-responsive b-0" data-pattern="priority-columns">
 
-
-                            <table id="datatable"   class="table table-striped table-bordered"
+                            {{-- DataTable --}}
+                            <table id="datatable"
+                                   class="table table-striped table-bordered"
                                    cellspacing="0"
                                    width="100%">
 
+                                {{-- Table Header --}}
                                 <thead>
                                 <tr>
                                     <th>PAYMENT ID</th>
                                     <th>APPOINTMENT ID</th>
                                     <th>AMOUNT</th>
                                     <th>DATE & TIME</th>
-
                                 </tr>
                                 </thead>
 
-                                
+                                {{-- Table Body --}}
+                                <tbody>
 
-                               <tbody>
+                                {{-- Display all payment records --}}
+                                @foreach($payments as $payment)
 
-@foreach($payments as $payment)
+                                    <tr>
 
-<tr>
-    <td>{{ $payment->idpayment }}</td>
+                                        {{-- Payment ID --}}
+                                        <td>{{ $payment->idpayment }}</td>
 
-    <td>APT-{{ $payment->appointment_idappointment }}</td>
+                                        {{-- Appointment ID --}}
+                                        <td>APT-{{ $payment->appointment_idappointment }}</td>
 
-    <td>{{ $payment->amount }}</td>
+                                        {{-- Payment Amount --}}
+                                        <td>{{ $payment->amount }}</td>
 
-    <td>{{ $payment->created_at }}</td>
-</tr>
+                                        {{-- Payment Date and Time --}}
+                                        <td>{{ $payment->created_at }}</td>
 
-@endforeach
+                                    </tr>
 
-</tbody>
+                                @endforeach
 
-
-                                
+                                </tbody>
 
                             </table>
 
                         </div>
+
                     </div>
-
-
-                    <!--Data Table End-->
-
-
-
-
+                    {{-- End Payment Table --}}
 
                 </div>
             </div>
         </div>
-    </div> <!-- container -->
 
-</div> <!-- Page content Wrapper -->
+    </div>
+</div>
 
-</div> <!-- content -->
-
-
-
-
-
-
-
-
-
-
-
-
-
+{{-- Include footer start --}}
 @include('includes/footer_start')
 
-<!-- Plugins js -->
+{{-- ================= JavaScript Files ================= --}}
+
+{{-- Form Plugins --}}
 <script src="{{ URL::asset('assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('assets/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js')}}"
-        type="text/javascript"></script>
+<script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+<script src="{{ URL::asset('assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js')}}"></script>
+<script src="{{ URL::asset('assets/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js')}}"></script>
+<script src="{{ URL::asset('assets/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js')}}"></script>
 
-<!-- Plugins Init js -->
+{{-- Initialize Form Plugins --}}
 <script src="{{ URL::asset('assets/pages/form-advanced.js')}}"></script>
 
-<!-- Required datatable js -->
+{{-- DataTables Scripts --}}
 <script src="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-<!-- Buttons examples -->
+
+{{-- DataTables Export Buttons --}}
 <script src="{{ URL::asset('assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/jszip.min.js')}}"></script>
@@ -157,25 +151,34 @@
 <script src="{{ URL::asset('assets/plugins/datatables/buttons.html5.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/buttons.print.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/buttons.colVis.min.js')}}"></script>
-<!-- Responsive examples -->
+
+{{-- Responsive DataTables --}}
 <script src="{{ URL::asset('assets/plugins/datatables/dataTables.responsive.min.js')}}"></script>
 <script src="{{ URL::asset('assets/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 
+{{-- SweetAlert --}}
 <script src="{{ URL::asset('assets/plugins/sweet-alert2/sweetalert2.min.js')}}"></script>
 <script src="{{ URL::asset('assets/pages/sweet-alert.init.js')}}"></script>
 
-<!-- Datatable init js -->
+{{-- Initialize DataTables --}}
 <script src="{{ URL::asset('assets/pages/datatables.init.js')}}"></script>
 
-<!-- Parsley js -->
-<script type="text/javascript" src="{{ URL::asset('assets/plugins/parsleyjs/parsley.min.js')}}"></script>
+{{-- Form Validation --}}
+<script src="{{ URL::asset('assets/plugins/parsleyjs/parsley.min.js')}}"></script>
+
+{{-- Notification Plugins --}}
 <script src="{{ URL::asset('assets/js/bootstrap-notify.js')}}"></script>
 <script src="{{ URL::asset('assets/js/jquery.notify.min.js')}}"></script>
 
-<script type="text/javascript">
+<script>
+
+    // Execute after page loads
     $(document).ready(function () {
+
+        // Enable Parsley form validation
         $('form').parsley();
 
+        // Add CSRF token to all AJAX requests
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -184,27 +187,25 @@
 
     });
 
-    $(document).on("wheel", "input[type=number]", function (e) {
+    // Prevent mouse wheel from changing number input values
+    $(document).on("wheel", "input[type=number]", function () {
         $(this).blur();
     });
 
-
-
-
-    //Change Status
+    // Activate or deactivate a record using AJAX
     function adMethod(dataID, tableName) {
 
-        $.post('activateDeactivate', {id: dataID, table: tableName}, function (data) {
+        $.post('activateDeactivate', {
+            id: dataID,
+            table: tableName
+        }, function (data) {
 
+            // Callback after status update
         });
+
     }
-
-
-
-
-
-
 
 </script>
 
+{{-- Include common footer --}}
 @include('includes/footer_end')
